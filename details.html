@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hatra Home | تفاصيل العقار الملكي</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#D4AF37',
+                            hover: '#AA7C11',
+                            light: '#F3E5AB'
+                        },
+                        dark: {
+                            deep: '#0B0C10',
+                            card: '#1F2833',
+                            accent: '#2C3539'
+                        },
+                        light: '#F5F5F7'
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-dark-deep text-light overflow-x-hidden text-start pt-24">
+
+    <!-- Navbar (نفس تصميم الرئيسية بالظبط لتوحيد الهوية) -->
+    <nav class="fixed w-full z-50 top-0 backdrop-blur-md bg-dark-deep/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between h-24 items-center">
+                
+                <!-- Logo -->
+                <a href="./index.html" class="flex flex-col items-start group">
+                    <span class="text-2xl sm:text-3xl font-black text-white tracking-wider font-serif group-hover:text-gold transition-colors duration-300">
+                        HATRA <span class="text-gold">HOME</span>
+                    </span>
+                    <span class="text-[10px] text-gray-400 tracking-[0.2em] -mt-1 font-sans">REAL ESTATE</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="./index.html" data-i18n="nav-home" class="hover:text-gold font-medium transition duration-300">الرئيسية</a>
+                    <a href="./index.html#properties" data-i18n="nav-luxury" class="text-gold font-bold">العقارات الفاخرة</a>
+                    <a href="./index.html#properties" data-i18n="nav-dubai" class="hover:text-gold font-medium transition duration-300">مشاريع دبي</a>
+                    <a href="./index.html#properties" data-i18n="nav-iraq" class="hover:text-gold font-medium transition duration-300">استثمارات العراق</a>
+                </div>
+
+                <!-- Action Area Icons -->
+                <div class="hidden md:flex items-center gap-6">
+                    <button id="lang-toggle" class="text-sm font-bold border border-white/20 px-3 py-1.5 hover:border-gold hover:text-gold transition duration-300">EN</button>
+                    
+                    <!-- المفضلة -->
+                    <a href="./favorites.html" class="relative p-2 text-white hover:text-gold transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        <span id="fav-count" class="absolute -top-1 -right-1 bg-gold text-dark-deep font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                    </a>
+
+                    <!-- السلة الاستثمارية المنسدلة -->
+                    <div class="relative">
+                        <button id="cart-btn" class="relative p-2 text-white hover:text-gold transition focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-dark-deep font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <div class="md:hidden flex items-center">
+                    <button id="menu-btn" class="text-white p-2">
+                        <div class="w-6 h-0.5 bg-white mb-1.5 mx-auto"></div>
+                        <div class="w-6 h-0.5 bg-white mb-1.5 mx-auto"></div>
+                        <div class="w-6 h-0.5 bg-white mx-auto"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Sidebar المعزول تماماً بخلفية مصمتة -->
+        <div id="mobile-menu" class="fixed top-24 bottom-0 w-full sm:w-80 bg-dark-card border-white/10 hidden transform translate-x-full transition-transform duration-300 flex flex-col p-8 gap-6 md:hidden z-50 shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
+            <a href="./index.html" class="text-xl hover:text-gold transition">الرئيسية</a>
+            <a href="./index.html#properties" class="text-xl text-gold font-bold">العقارات الفاخرة</a>
+            <hr class="border-white/10">
+            <button class="w-full bg-gold text-dark-deep py-3 font-bold text-sm">تواصل معنا</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        
+        <!-- Breadcrumb & Back Link -->
+        <div class="mb-8 flex justify-between items-center">
+            <a href="./index.html" class="text-xs text-gray-400 hover:text-gold transition flex items-center gap-2">
+                ← <span data-i18n="back-to-gallery">العودة للمحفظة العقارية</span>
+            </a>
+            <span id="property-tag-badge" class="bg-gold/10 border border-gold/30 text-gold text-xs font-bold px-4 py-1.5 rounded-none">
+                <!-- هيتم حقن الحالة بالـ JS (مثل: حصري / متاح فوراً) -->
+            </span>
+        </div>
+
+        <!-- Premium Imagery Gallery Grid (معرض الصور الفاخر) -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+            <!-- الصورة الرئيسية الكبيرة -->
+            <div class="md:col-span-3 h-[400px] md:h-[550px] overflow-hidden border border-white/5 relative group">
+                <img id="main-gallery-img" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover transition duration-700 group-hover:scale-105" alt="Main View">
+            </div>
+            <!-- صور المعاينة الجانبية الثانوية -->
+            <div class="grid grid-cols-3 md:grid-cols-1 gap-4 h-28 md:h-[550px]">
+                <div class="overflow-hidden border border-white/5 cursor-pointer hover:border-gold/50 transition">
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover shadow-lg" onclick="changeMainImage(this.src)">
+                </div>
+                <div class="overflow-hidden border border-white/5 cursor-pointer hover:border-gold/50 transition">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover shadow-lg" onclick="changeMainImage(this.src)">
+                </div>
+                <div class="overflow-hidden border border-white/5 cursor-pointer hover:border-gold/50 transition relative">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover opacity-40 shadow-lg" onclick="changeMainImage(this.src)">
+                    <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gold pointer-events-none">+2 <span data-i18n="more-photos">صور</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Columns Layout: Left Details / Right Sticky Booking Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+            
+            <!-- Column 1 & 2: Full Specifications and Insights -->
+            <div class="lg:col-span-2 space-y-10">
+                
+                <!-- Title & Price Block -->
+                <div class="border-b border-white/10 pb-6 space-y-3">
+                    <p id="detail-location" class="text-gold font-medium text-sm tracking-wider">
+                        <!-- مكان حقن الموقع بالـ JS -->
+                    </p>
+                    <h1 id="detail-title" class="text-3xl md:text-5xl font-black text-white leading-tight">
+                        <!-- مكان حقن اسم العقار الفاخر -->
+                    </h1>
+                    <div class="flex items-baseline gap-4 pt-2">
+                        <span id="detail-price" class="text-3xl md:text-4xl font-serif font-bold text-gold">
+                            <!-- السعر الرقمي -->
+                        </span>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest" data-i18n="investment-value">قيمة الاستثمار الرأسمالي</span>
+                    </div>
+                </div>
+
+                <!-- Luxury Structural Blueprint (مواصفات التقسيم الداخلي) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 bg-dark-card border border-white/5 p-6">
+                    <div class="text-center p-4 border-r border-white/5">
+                        <span class="block text-xl mb-1">🛏️</span>
+                        <span class="block text-gray-400 text-xs uppercase font-medium" data-i18n="beds-label">غرف النوم</span>
+                        <span id="blueprint-beds" class="block text-white text-lg font-bold mt-1">-</span>
+                    </div>
+                    <div class="text-center p-4 sm:border-r border-white/5">
+                        <span class="block text-xl mb-1">🛁</span>
+                        <span class="block text-gray-400 text-xs uppercase font-medium" data-i18n="baths-label">دورات المياه</span>
+                        <span id="blueprint-baths" class="block text-white text-lg font-bold mt-1">-</span>
+                    </div>
+                    <div class="text-center p-4 border-r border-white/5">
+                        <span class="block text-xl mb-1">📐</span>
+                        <span class="block text-gray-400 text-xs uppercase font-medium" data-i18n="area-label">المساحة الإجمالية</span>
+                        <span id="blueprint-area" class="block text-white text-lg font-bold mt-1">-</span>
+                    </div>
+                    <div class="text-center p-4">
+                        <span class="block text-xl mb-1">🚗</span>
+                        <span class="block text-gray-400 text-xs uppercase font-medium" data-i18n="parking-label">موقف السيارات</span>
+                        <span class="block text-white text-lg font-bold mt-1" data-i18n="parking-provided">مغطى / خاص</span>
+                    </div>
+                </div>
+
+                <!-- Description Text Block -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-white border-r-4 border-gold pr-3" data-i18n="overview-title">نظرة عامة على العقار</h3>
+                    <p id="detail-desc" class="text-gray-300 text-sm md:text-base font-light leading-relaxed">
+                        <!-- هيتم رندرة وصف فخم فريد للمنتج هنا بالكامل باللغتين -->
+                    </p>
+                </div>
+
+                <!-- Premium Amenities Icons Grid (المميزات الفاخرة المدمجة) -->
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-white border-r-4 border-gold pr-3" data-i18n="amenities-title">المرافق والتجهيزات الحصرية</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-300 font-light">
+                        <div class="flex items-center gap-3 bg-dark-card/50 p-3 border border-white/5">
+                            <span class="text-gold">✔</span> <span data-i18n="amenity-1">نظام تحكم ذكي بالكامل (Smart Home System)</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-dark-card/50 p-3 border border-white/5">
+                            <span class="text-gold">✔</span> <span data-i18n="amenity-2">مسبح إنفينيتي خاص بإطلالة بانورامية</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-dark-card/50 p-3 border border-white/5">
+                            <span class="text-gold">✔</span> <span data-i18n="amenity-3">أرضيات وتكسيات من رخام الكرارا الإيطالي النادر</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-dark-card/50 p-3 border border-white/5">
+                            <span class="text-gold">✔</span> <span data-i18n="amenity-4">حراسة أمنية وأنظمة مراقبة متكاملة 24/7</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Column 3: Sticky Booking & Action Sidebar (الفورم الجانبي الثابت لحجز المعاينات) -->
+            <aside class="lg:sticky lg:top-36 space-y-6">
+                
+                <div class="bg-dark-card border border-white/10 p-6 shadow-2xl">
+                    <h3 class="text-lg font-bold text-white mb-2" data-i18n="sidebar-form-title">حجز جلسة استشارة خاصة</h3>
+                    <p class="text-xs text-gray-400 font-light mb-6" data-i18n="sidebar-form-sub">سيتواصل معك مستشارنا العقاري المعتمد في غضون 30 دقيقة فقط بسرية تامة.</p>
+                    
+                    <form id="inquiry-form" class="space-y-4" onsubmit="event.preventDefault();">
+                        <div>
+                            <label class="block text-[11px] uppercase text-gold font-bold mb-1" data-i18n="form-name">الاسم بالكامل</label>
+                            <input type="text" required class="w-full p-3.5 bg-dark-deep border border-white/10 focus:border-gold focus:outline-none text-white text-sm transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] uppercase text-gold font-bold mb-1" data-i18n="form-phone">رقم الهاتف الدولي</label>
+                            <input type="tel" required placeholder="+964 / +971" class="w-full p-3.5 bg-dark-deep border border-white/10 focus:border-gold focus:outline-none text-white text-sm text-left transition">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] uppercase text-gold font-bold mb-1" data-i18n="form-msg">ملاحظات خاصة بالميزانية أو موعد الاتصال</label>
+                            <textarea rows="3" class="w-full p-3.5 bg-dark-deep border border-white/10 focus:border-gold focus:outline-none text-white text-sm transition"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gold text-dark-deep p-4 font-bold text-xs uppercase tracking-wider hover:bg-white transition duration-300" data-i18n="form-submit-btn">
+                            تأكيد موعد المعاينة الملكية
+                        </button>
+                    </form>
+                </div>
+
+                <!-- أزرار تفاعلية سريعة (إضافة للسلة / حفظ بالمفضلة) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="detail-action-fav" class="flex items-center justify-center gap-2 border border-white/10 p-3 text-xs font-bold text-gray-300 hover:border-gold hover:text-gold transition">
+                        <span>❤</span> <span data-i18n="btn-save-fav">حفظ بالمفضلة</span>
+                    </button>
+                    <button id="detail-action-cart" class="flex items-center justify-center gap-2 bg-white text-dark-deep p-3 text-xs font-bold hover:bg-gold transition">
+                        <span>💼</span> <span data-i18n="btn-add-interest">إضافة للسلة</span>
+                    </button>
+                </div>
+
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-light py-12 border-t border-white/10 mt-24 text-start">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <h3 class="text-2xl font-black font-serif">HATRA <span class="text-gold">HOME</span></h3>
+            <p class="text-gray-500 text-xs" data-i18n="footer-rights">&copy; 2026 حاترا هوم العالمية. جميع الحقوق محفوظة لشريك التطوير Easy Way Tech.</p>
+        </div>
+    </footer>
+
+    <!-- دالة لتغيير الصورة المعروضة الكبيرة أوتوماتيكياً عند الضغط على المصغرات -->
+    <script>
+        function changeMainImage(src) {
+            document.getElementById('main-gallery-img').src = src;
+        }
+    </script>
+    <script>
+        // 1. قاعدة البيانات الموحدة ثنائية اللغة (نفس داتا الصفحة الرئيسية مع إضافة الوصف والصور)
+        const hatraProperties = [
+            {
+                id: 1,
+                title: { ar: "قصر فيلا الحضر الملكي", en: "Royal Hatra Palace Villa" },
+                locationText: { ar: "دبي - نخلة جميرا", en: "Dubai - Palm Jumeirah" },
+                location: "dubai", type: "mansion", price: 12500000,
+                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                subImages: [
+                    "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                ],
+                beds: 6, baths: 7, area: 850, tag: { ar: "متاح فوراً", en: "Ready to Move" },
+                desc: {
+                    ar: "قصر استثنائي يقع في قلب نخلة جميرا الفاخرة، يتميز بتشطيبات ألتر لوكس وتأثيث كامل من كبرى بيوت الأزياء الإيطالية العالمية. يضم شاطئاً خاصاً ممتداً، مسبحاً خارجياً أولمبياً، ملحقاً منفصلاً للمضيافة وحراسة متكاملة، لتوفير أقصى درجات الخصوصية والأمان لملوك الاستثمار.",
+                    en: "An exceptional palace located in the heart of elite Palm Jumeirah, featuring ultra-luxury architectural finishes and fully furnished by top global Italian fashion houses. Includes an extended private beach, Olympic outdoor pool, separate guest wing, and integrated security for ultimate privacy."
+                }
+            },
+            {
+                id: 2,
+                title: { ar: "بنتهاوس السحاب المطل", en: "The Cloud Penthouse" },
+                locationText: { ar: "دبي - داون تاون", en: "Dubai - Downtown" },
+                location: "dubai", type: "penthouse", price: 8200000,
+                image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                subImages: [
+                    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                ],
+                beds: 4, baths: 5, area: 520, tag: { ar: "براند نيو", en: "Brand New" },
+                desc: {
+                    ar: "بنتهاوس فاخر يحتل الطوابق العليا لبرج ناطحة سحاب في داون تاون دبي، بإطلالة كاملة 360 درجة على برج خليفة والنوافير الراقصة. مجهز بالكامل بنظام سمارت هوم الجيل الخامس، مصعد خاص، وتراس معلق بمسبح زجاجي دافئ.",
+                    en: "A luxury penthouse occupying the highest crest of Downtown Dubai, featuring a complete 360-degree panoramic view of Burj Khalifa and the Dubai Fountains. Fully operational with 5th generation smart home automation, private elevator, and a glass infinity pool terrace."
+                }
+            },
+            {
+                id: 3,
+                title: { ar: "فيلا الجادرية الفاخرة", en: "Al-Jadriyah Luxury Villa" },
+                locationText: { ar: "بغداد - الجادرية", en: "Baghdad - Al-Jadriyah" },
+                location: "baghdad", type: "mansion", price: 3100000,
+                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                subImages: [
+                    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                ],
+                beds: 5, baths: 6, area: 600, tag: { ar: "حصري", en: "Exclusive" },
+                desc: {
+                    ar: "فيلا معمارية نادرة في أرقى وأأمن أحياء بغداد (الجادرية)، تجمع بين فخامة التصميم البابلي العريق وعصرية البناء والخرسانة الحديثة. تشتمل على حديقة ملكية واسعة، منظومة طاقة شمسية مستقلة، ومنطقة ديوان ومجالس منفصلة تماماً.",
+                    en: "A rare architectural masterpiece in Baghdad's most secure luxury district (Al-Jadriyah), merging ancient Babylonian structural patterns with modern building aesthetics. Features a massive royal garden, independent hybrid solar grid, and a detached hosting suite."
+                }
+            },
+            {
+                id: 4,
+                title: { ar: "شقة المنصور الملكية", en: "Al-Mansour Royal Apartment" },
+                locationText: { ar: "بغداد - المنصور", en: "Baghdad - Al-Mansour" },
+                location: "baghdad", type: "apartment", price: 1400000,
+                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                subImages: [
+                    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                    "https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                ],
+                beds: 3, baths: 3, area: 280, tag: { ar: "قيد التسليم", en: "Under Construction" },
+                desc: {
+                    ar: "شقة مجهزة بالكامل بتشطيبات وتجهيزات ملكية تقع في قلب حي المنصور الحيوي والتجاري ببغداد. حراسة مشددة، تكييف مركزي متكامل، وموقع استراتيجي قريب من كافة الخدمات الدبلوماسية.",
+                    en: "A premium operational apartment with royal grade specs located in the beating heart of Al-Mansour business hub in Baghdad. Features heavy zone security, VRF central climate systems, and high accessibility."
+                }
+            }
+        ];
+    
+        // قاموس الترجمة للعناصر الثابتة في صفحة التفاصيل
+        const dictionary = {
+            ar: {
+                "nav-home": "الرئيسية", "nav-luxury": "العقارات الفاخرة", "nav-dubai": "مشاريع دبي", "nav-iraq": "استثمارات العراق",
+                "back-to-gallery": "العودة للمحفظة العقارية", "more-photos": "صور إضافية", "investment-value": "قيمة الاستثمار الاستراتيجي",
+                "beds-label": "غرف النوم", "baths-label": "دورات المياه", "area-label": "المساحة الإجمالية", "parking-label": "موقف السيارات",
+                "parking-provided": "مغطى / خاص", "overview-title": "نظرة عامة على العقار الفاخر", "amenities-title": "المرافق والتجهيزات الحصرية",
+                "amenity-1": "نظام تحكم ذكي بالكامل (Smart Home System)", "amenity-2": "مسبح إنفينيتي خاص بإطلالة بانورامية",
+                "amenity-3": "أرضيات وتكسيات من رخام الكرارا الإيطالي النادر", "amenity-4": "حراسة أمنية وأنظمة مراقبة متكاملة 24/7",
+                "sidebar-form-title": "حجز جلسة استشارة خاصة", "sidebar-form-sub": "سيتواصل معك مستشارنا العقاري المعتمد في غضون 30 دقيقة فقط بسرية تامة.",
+                "form-name": "الاسم بالكامل", "form-phone": "رقم الهاتف الدولي", "form-msg": "ملاحظات خاصة بالميزانية وموعد الاتصال",
+                "form-submit-btn": "تأكيد موعد المعاينة الملكية", "btn-save-fav": "حفظ بالمفضلة", "btn-add-interest": "إضافة للسلة",
+                "saved-fav": "في المفضلة ❤", "added-cart": "في السلة ✓", "footer-rights": "© 2026 حاترا هوم العالمية. جميع الحقوق محفوظة لشريك التطوير Easy Way Tech."
+            },
+            en: {
+                "nav-home": "Home", "nav-luxury": "Luxury Properties", "nav-dubai": "Dubai Projects", "nav-iraq": "Iraq Investments",
+                "back-to-gallery": "Back to Portfolio", "more-photos": "Photos", "investment-value": "Capital Investment Value",
+                "beds-label": "Bedrooms", "baths-label": "Bathrooms", "area-label": "Total Area", "parking-label": "Parking Space",
+                "parking-provided": "Private / Covered", "overview-title": "Luxury Property Overview", "amenities-title": "Exclusive Amenities & Features",
+                "amenity-1": "Full Fifth-Generation Smart Home System", "amenity-2": "Private Infinity Pool with Panoramic Views",
+                "amenity-3": "Rare Italian Carrara Marble Flooring", "amenity-4": "24/7 Integrated Heavy Zone Security Systems",
+                "sidebar-form-title": "Book a Private Consultation", "sidebar-form-sub": "Our certified real estate advisor will contact you within 30 minutes in strict confidence.",
+                "form-name": "Full Name", "form-phone": "International Phone Number", "form-msg": "Special budget or contact preferences",
+                "form-submit-btn": "Confirm Royal Viewing Schedule", "btn-save-fav": "Save to Favorites", "btn-add-interest": "Add to Cart",
+                "saved-fav": "In Favorites ❤", "added-cart": "In Cart ✓", "footer-rights": "© 2026 HATRA HOME GLOBAL. All rights reserved to Easy Way Tech."
+            }
+        };
+    
+        // إدارة الحالة العامة (State Engine)
+        let currentLang = localStorage.getItem('hatra_lang') || 'ar';
+        let favorites = JSON.parse(localStorage.getItem('hatra_favs')) || [];
+        let cart = JSON.parse(localStorage.getItem('hatra_cart')) || [];
+        let currentProperty = null;
+    
+        // 2. دالة استخراج المعرّف (ID) من الرابط وسحب داتا العقار المستهدف
+        function getPropertyIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = parseInt(urlParams.get('id')) || 1; // إذا لم يجد ID، يعرض العقار الأول افتراضياً
+            currentProperty = hatraProperties.find(p => p.id === id) || hatraProperties[0];
+        }
+    
+        // 3. دالة رندرة وتوزيع البيانات ديناميكياً في الصفحة حسب اللغة المختارة
+        function renderPropertyDetails() {
+            if (!currentProperty) return;
+    
+            // تحديث اتجاه ولغة المستند الأساسي
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = currentLang;
+            document.getElementById('lang-toggle').innerText = currentLang === 'ar' ? 'EN' : 'العربية';
+    
+            // ترجمة النصوص الثابتة التي تحمل وسم data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dictionary[currentLang][key]) el.innerHTML = dictionary[currentLang][key];
+            });
+    
+            // حقن صور المعرض (الصورة الرئيسية الكبيرة)
+            document.getElementById('main-gallery-img').src = currentProperty.image;
+    
+            // حقن صور المعاينة الجانبية الفرعية ديناميكياً
+            const galleryContainer = document.querySelector('.grid-cols-3.md:grid-cols-1');
+            if (galleryContainer && currentProperty.subImages) {
+                galleryContainer.innerHTML = currentProperty.subImages.map((imgSrc, i) => `
+                    <div class="overflow-hidden border border-white/5 cursor-pointer hover:border-gold/50 transition relative h-[100px] md:h-[160px]">
+                        <img src="${imgSrc}" class="w-full h-full object-cover shadow-lg" onclick="changeMainImage(this.src)">
+                        ${i === 2 ? `<div class="absolute inset-0 bg-black/60 flex items-center justify-center text-xs font-bold text-gold pointer-events-none">+2 ${dictionary[currentLang]['more-photos']}</div>` : ''}
+                    </div>
+                `).join('');
+            }
+    
+            // حقن داتا المحتوى النصي والهيكلي للعقار
+            document.getElementById('property-tag-badge').innerText = currentProperty.tag[currentLang];
+            document.getElementById('detail-location').innerText = currentProperty.locationText[currentLang];
+            document.getElementById('detail-title').innerText = currentProperty.title[currentLang];
+            document.getElementById('detail-price').innerText = `$${currentProperty.price.toLocaleString()}`;
+            document.getElementById('detail-desc').innerText = currentProperty.desc[currentLang];
+    
+            // حقن المواصفات الفنية للتقسيم الداخلي (Blueprint)
+            document.getElementById('blueprint-beds').innerText = currentProperty.beds;
+            document.getElementById('blueprint-baths').innerText = currentProperty.baths;
+            document.getElementById('blueprint-area').innerText = `${currentProperty.area} م²`;
+    
+            // تحديث عدادات النافبار وأشكال أزرار التحكم الجانبية (سلة / مفضلة)
+            updateBadgesAndButtons();
+        }
+    
+        // 4. تحديث حالة العدادات وشكل أزرار الحفظ في المفضلة والسلة
+        function updateBadgesAndButtons() {
+            document.getElementById('fav-count').innerText = favorites.length;
+            document.getElementById('cart-count').innerText = cart.length;
+    
+            const favBtn = document.getElementById('detail-action-fav');
+            const cartBtn = document.getElementById('detail-action-cart');
+    
+            // تحديث شكل وزرار المفضلة الجانبي
+            if (favorites.includes(currentProperty.id)) {
+                favBtn.innerHTML = `<span>❤</span> <span>${dictionary[currentLang]['saved-fav']}</span>`;
+                favBtn.className = "flex items-center justify-center gap-2 border border-gold text-gold p-3 text-xs font-bold bg-gold/5 transition";
+            } else {
+                favBtn.innerHTML = `<span>❤</span> <span>${dictionary[currentLang]['btn-save-fav']}</span>`;
+                favBtn.className = "flex items-center justify-center gap-2 border border-white/10 p-3 text-xs font-bold text-gray-300 hover:border-gold hover:text-gold transition";
+            }
+    
+            // تحديث شكل وزرار السلة الجانبي
+            if (cart.includes(currentProperty.id)) {
+                cartBtn.innerHTML = `<span>✓</span> <span>${dictionary[currentLang]['added-cart']}</span>`;
+                cartBtn.className = "flex items-center justify-center gap-2 bg-white text-dark-deep p-3 text-xs font-bold transition shadow-xl";
+            } else {
+                cartBtn.innerHTML = `<span>💼</span> <span>${dictionary[currentLang]['btn-add-interest']}</span>`;
+                cartBtn.className = "flex items-center justify-center gap-2 bg-gold text-dark-deep p-3 text-xs font-bold hover:bg-white transition";
+            }
+        }
+    
+        // 5. إدارة أحداث أزرار الحفظ (Click Event Triggers)
+        document.getElementById('detail-action-fav').addEventListener('click', () => {
+            if (favorites.includes(currentProperty.id)) {
+                favorites = favorites.filter(id => id !== currentProperty.id);
+            } else {
+                favorites.push(currentProperty.id);
+            }
+            localStorage.setItem('hatra_favs', JSON.stringify(favorites));
+            updateBadgesAndButtons();
+        });
+    
+        document.getElementById('detail-action-cart').addEventListener('click', () => {
+            if (cart.includes(currentProperty.id)) {
+                cart = cart.filter(id => id !== currentProperty.id);
+            } else {
+                cart.push(currentProperty.id);
+            }
+            localStorage.setItem('hatra_cart', JSON.stringify(cart));
+            updateBadgesAndButtons();
+        });
+    
+        // 6. لوجيك تغيير وتبديل اللغات الفوري
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('hatra_lang', currentLang);
+            renderPropertyDetails();
+        }
+        document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+    
+        // 7. فورم الاستفسار الفاخر وتأكيد الإرسال للعميل
+        document.getElementById('inquiry-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const alertMsg = currentLang === 'ar' 
+                ? "⚜️ تم استلام طلب المعاينة الملكية بنجاح. سيتواصل معك مستشارك العقاري الخاص عبر الهاتف قريباً." 
+                : "⚜️ Your Royal viewing request has been received. Our property advisor will contact you shortly.";
+            alert(alertMsg);
+            e.target.reset();
+        });
+    
+        // 8. لوجيك تشغيل قائمة الهامبرجر منيو للموبايل بعزل تام
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('translate-x-full');
+            });
+        }
+    
+        // بدء الإقلاع الفوري عند تحميل كود الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            getPropertyIdFromURL();
+            renderPropertyDetails();
+        });
+    </script>
+</body>
+</html>
